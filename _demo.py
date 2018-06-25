@@ -24,8 +24,8 @@ def load_images(dirname):
     return imlist
 
 
-model = model_from_yaml(open("model/5.yaml").read())
-model.load_weights( "model/5_weight.h5")
+model = model_from_yaml(open("model/sd_judge.yaml").read())
+model.load_weights( "model/sd_judge_weight.h5")
 
 
 CROP_W, CROP_H = 150,200
@@ -35,8 +35,8 @@ cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
 print(frame.shape)
 
-imlist_test = load_images("data/test/")
-x_test = np.concatenate([imlist_test],axis=0)
+imlist = load_images("data/sd_judge/")
+x_test = np.concatenate([imlist],axis=0)
 y_pred = np.round(model.predict(x_test, batch_size = 48, verbose=1))
 
 skip = 0
@@ -80,7 +80,7 @@ while(True):
 
         cv2.imwrite('data/test/' + "1" +  '.png',frame)
 #         subprocess.call(["python3", "JUDGE.py"
-                         
+
         imlist_test = load_images("data/test/")
         x_test = np.concatenate([imlist_test],axis=0)
 #     ０はOK、１はNG
@@ -97,7 +97,7 @@ while(True):
         if y_pred[0] == 0:
             print('OK!アーム動かしません!')
 #          print('now capture', now)
-        
-        
+
+
 cap.release()
 cv2.destroyAllWindows()
